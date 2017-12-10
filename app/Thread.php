@@ -4,8 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Thread
+ * @package App
+ */
 class Thread extends Model
 {
+
+    const RULES = [
+        'user_id' => 'required|int|exists:users.id',
+        'title'   => 'required|string|max:255',
+        'body'    => 'required|string',
+    ];
 
     protected $guarded = [];
 
