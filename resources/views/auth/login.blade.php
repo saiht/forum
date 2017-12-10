@@ -1,60 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+    <div class="container">
+        <div class="row">
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
+            @if ($errors->any())
+                <div class="section section-notifications col-md-12" id="notifications">
+                    @foreach($errors->all() as $error)
+                        <div class="alert alert-warning" role="alert">
+                            <div class="container">
+                                <div class="alert-icon">
+                                    <i class="now-ui-icons ui-1_bell-53"></i>
                                 </div>
+                                <strong>Warning!</strong> {{ $error }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="now-ui-icons ui-1_simple-remove"></i>
+                            </span>
+                                </button>
                             </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="card card-signup ml-auto mr-auto">
+                <div class="card-body">
+                    <h4 class="card-title text-center">Login</h4>
+                    <form class="form" method="POST" action="{{ route('login') }}">
+                        {{ csrf_field() }}
+                        <div class="input-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons ui-1_email-85"></i>
+                        </span>
+                            <input type="email" name="email" class="form-control" placeholder="Email..." value="{{
+                                old('email') }}" required>
+                        </div>
+
+                        <div class="input-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <span class="input-group-addon">
+                            <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                        </span>
+                            <input type="password" name="password" class="form-control" placeholder="Password...">
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary btn-round btn-lg">Sign In</button>
+                        </div>
+
+                        <!-- If you want to add a checkbox to this form, uncomment this code -->
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="remember" type="checkbox" {{ old('remember') ?
+                                'checked' : '' }}>
+                                <span class="form-check-sign"></span>
+                                Remember me
+                            </label>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     Forgot Your Password?
                                 </a>
@@ -65,5 +69,12 @@
             </div>
         </div>
     </div>
-</div>
+@endsection
+
+@section('endjs')
+    @if($errors->any())
+        <script>
+            $('#notifications').show();
+        </script>
+    @endif
 @endsection
