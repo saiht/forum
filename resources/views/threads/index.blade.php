@@ -2,28 +2,29 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Threads</div>
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
 
-                    <div class="panel-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        <ul class="list-group">
-                            @foreach($threads as $thread)
-                                <!-- List group -->
-                                    <li class="list-group-item"><a href="{{ $thread->path() }}">{{ $thread->title
-                                    }}</a></li>
-                            @endforeach
-                        </ul>
+        @foreach($threads as $thread)
+            <div class="card card-plain card-blog">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="card-title">
+                            <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
+                        </h3>
+                        <p class="card-description">
+                            {{ $thread->body }}
+                            <a href="{{ $thread->path() }}"> Read More </a>
+                        </p>
+                        <div class="author">
+                            <span>{{ $thread->creator->name }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 @endsection
