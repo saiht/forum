@@ -2,15 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Reply;
 use App\Thread;
-use App\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
+use Tests\DatabaseMigrationsTestCase;
 
-class ParticipateInForumTest extends TestCase
+class ParticipateInForumTest extends DatabaseMigrationsTestCase
 {
-
-    use DatabaseMigrations;
 
     /** @var  Thread $thread */
     private $thread;
@@ -19,19 +16,24 @@ class ParticipateInForumTest extends TestCase
     {
         parent::setUp();
 
-        $this->thread = factory('App\Thread')->create();
+        $this->thread = create('App\Thread');
     }
 
     /** @test */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
-        $user = factory(User::class)->create();
-        $this->be($user); // used to authenticate user
+//        $user = create(User::class);
+//        $this->be($user); // used to authenticate user
 
-        $reply = factory('App\Reply')->make();
+        // replaced by new helper method
+        $this->signIn();
+
+        $reply = make(Reply::class);
         $this->post($this->thread->path() . '/replies', $reply->toArray());
 
-        $this->get($this->thread->path())->assertSee($reply->body);
+        $this
+            ->get($this->thread->path())
+            ->assertSee($reply->body);
     }
 
     /** @test */
@@ -40,7 +42,7 @@ class ParticipateInForumTest extends TestCase
         // see this Exception class by removing $this->be($user);
         // from an_authenticated_user_may_participate_in_forum_threads method
         $this->expectException('Illuminate\Auth\AuthenticationException');
-        $reply = factory('App\Reply')->make();
+        $reply = make(Reply::class);
         $this->post($this->thread->path() . '/replies', $reply->toArray());
     }
 }

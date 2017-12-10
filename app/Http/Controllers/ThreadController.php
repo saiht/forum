@@ -66,7 +66,7 @@ class ThreadController extends Controller
             $thread = Thread::create($data);
         }
 //        else {
-        // return edit view with error message(s)
+        // @TODO return edit view with error message(s)
 //        }
 
         return redirect($thread->path());

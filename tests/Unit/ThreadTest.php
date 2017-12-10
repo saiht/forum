@@ -5,13 +5,14 @@ namespace Tests\Unit;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\TestCase;
+use Tests\DatabaseMigrationsTestCase;
 
-class ThreadTest extends TestCase
+/**
+ * Class ThreadTest
+ * @package Tests\Unit
+ */
+class ThreadTest extends DatabaseMigrationsTestCase
 {
-
-    use DatabaseMigrations;
 
     /** @var  Thread $thread */
     private $thread;
@@ -21,7 +22,7 @@ class ThreadTest extends TestCase
         parent::setUp();
 
         // if make method used instead of create, id will be 'null'
-        $this->thread = factory('App\Thread')->create();
+        $this->thread = create(Thread::class);
     }
 
     /** @test */
@@ -43,10 +44,9 @@ class ThreadTest extends TestCase
     /** @test */
     public function a_thread_can_add_a_reply()
     {
-
         $this->thread->addReply([
-            'body'    => 'foobar',
-            'user_id' => 1,
+            'body'      => 'foobar',
+            'user_id'   => 1,
             'thread_id' => $this->thread->id,
         ]);
 
